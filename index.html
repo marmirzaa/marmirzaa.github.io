@@ -10,44 +10,48 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { font-family: 'Jost', system-ui, sans-serif; font-size: 17px; }
+    .shop-arch { border-radius: 48% 48% 8% 8% / 36% 36% 8% 8%; border: 10px solid #f1d3e2; box-shadow: 0 0 0 2px #bcd160; }
+    a:focus-visible, button:focus-visible { outline: 3px solid #4f6417; outline-offset: 3px; }
     h1, h2, h3, .font-serif { font-family: 'Cormorant Garamond', serif; }
   </style>
 </head>
-<body class="bg-[#FAF8F5] text-[#2C2724] antialiased">
+<body class="bg-[#f7f1e3] text-[#2e1b0f] antialiased">
 
   <!-- Top Announcement Bar -->
-  <div class="bg-[#2C2724] text-[#EDE8E1] text-xs py-2 px-4 text-center tracking-wider">
+  <div class="bg-[#2e1b0f] text-[#f7f1e3] text-xs py-2 px-4 text-center tracking-wider">
     🎉 <strong>Brand Launch Sale</strong> • Buy a bundle of 3 candles &amp; get <strong>FREE shipping</strong> anywhere in Malaysia 🇲🇾
   </div>
 
   <!-- Navigation -->
-  <header class="sticky top-0 bg-[#FAF8F5]/90 backdrop-blur-md z-30 border-b border-[#E6E0D6]">
+  <header class="sticky top-0 bg-[#f7f1e3]/90 backdrop-blur-md z-30 border-b border-[#e3d8bf]">
     <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-      <a href="/" class="flex items-center gap-3 text-3xl font-serif tracking-widest font-semibold uppercase">
-        <img src="/images/gelame-logo.jpeg" alt="Gelamé Candle logo" class="h-14 w-14 rounded-full object-cover" />
+      <a href="/" class="flex items-center gap-3 text-2xl font-serif font-semibold">
+        <img src="/images/gelame-logo.jpeg" alt="Gelamé Candle logo" class="h-10 w-10 rounded-full object-cover" />
         <span>Gelamé</span>
       </a>
 
       <!-- Page links (desktop) -->
-      <nav aria-label="Main" class="hidden md:flex items-center gap-8 text-sm tracking-wider uppercase font-medium">
-        <a href="/our-story/" class="hover:text-[#8B5A3C] transition">Our Story</a>
-        <a href="/coming-soon/" class="hover:text-[#8B5A3C] transition">Coming Soon</a>
+      <nav aria-label="Main" class="hidden md:flex items-center gap-6">
+        <a href="/" aria-current="page" class="py-1 border-b-2 border-[#4f6417]">Shop</a>
+        <a href="/our-story/" class="py-1 border-b-2 border-transparent hover:border-[#4f6417] transition">Our story</a>
+        <a href="/coming-soon/" class="py-1 border-b-2 border-transparent hover:border-[#4f6417] transition">Coming soon</a>
       </nav>
 
-      <button id="cart-toggle-btn" class="relative text-sm tracking-wider uppercase font-medium flex items-center gap-2">
+      <button id="cart-toggle-btn" class="relative flex items-center gap-2">
         <span>Bag</span>
-        <span id="cart-badge" class="bg-[#8B5A3C] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
+        <span id="cart-badge" class="bg-[#bcd160] text-[#2e1b0f] text-xs font-semibold w-5 h-5 rounded-full flex items-center justify-center">0</span>
       </button>
     </div>
 
     <!-- Page links (mobile) -->
-    <nav aria-label="Main (mobile)" class="md:hidden border-t border-[#E6E0D6] flex justify-center gap-8 py-2 text-xs tracking-wider uppercase font-medium">
-      <a href="/our-story/" class="hover:text-[#8B5A3C] transition">Our Story</a>
-      <a href="/coming-soon/" class="hover:text-[#8B5A3C] transition">Coming Soon</a>
+    <nav aria-label="Main (mobile)" class="md:hidden border-t border-[#e3d8bf] flex justify-center gap-7 py-2 text-[15px]">
+      <a href="/" aria-current="page" class="border-b-2 border-[#4f6417]">Shop</a>
+      <a href="/our-story/">Our story</a>
+      <a href="/coming-soon/">Coming soon</a>
     </nav>
   </header>
 
@@ -57,7 +61,7 @@
       
       <!-- Product Gallery -->
       <div class="space-y-4">
-        <div class="aspect-[4/5] rounded-2xl overflow-hidden bg-stone-100 shadow-md border border-stone-200">
+        <div class="aspect-[4/5] overflow-hidden bg-stone-100 shop-arch">
           <img 
             id="main-image"
             src="/images/product-1.jpg" 
@@ -66,7 +70,7 @@
           />
         </div>
         <div class="flex flex-wrap gap-3">
-          <img onclick="changeImage(this)" class="gallery-thumb w-16 h-16 rounded-lg object-cover cursor-pointer border-2 border-[#8B5A3C]" src="/images/product-1.jpg" alt="Gelamé candle in an amber glass jar with a cork lid, front view">
+          <img onclick="changeImage(this)" class="gallery-thumb w-16 h-16 rounded-lg object-cover cursor-pointer border-2 border-[#4f6417]" src="/images/product-1.jpg" alt="Gelamé candle in an amber glass jar with a cork lid, front view">
           <img onclick="changeImage(this)" class="gallery-thumb w-16 h-16 rounded-lg object-cover cursor-pointer border border-stone-200 hover:opacity-80" src="/images/product-2.jpg" alt="Gelamé candle with its green and pink label, close to the camera">
           <img onclick="changeImage(this)" class="gallery-thumb w-16 h-16 rounded-lg object-cover cursor-pointer border border-stone-200 hover:opacity-80" src="/images/product-3.jpg" alt="Gelamé amber candle jar on a white surface">
           <img onclick="changeImage(this)" class="gallery-thumb w-16 h-16 rounded-lg object-cover cursor-pointer border border-stone-200 hover:opacity-80" src="/images/product-4.jpg" alt="Gelamé amber candle jar with cork lid, top-down view">
@@ -77,7 +81,7 @@
 
       <!-- Purchase Section -->
       <div class="flex flex-col justify-center">
-        <span class="text-xs uppercase tracking-[0.25em] text-[#8B5A3C] font-semibold">Hand-Poured in Malaysia</span>
+        <span class="text-xs uppercase tracking-[0.25em] text-[#4f6417] font-semibold">Hand-Poured in Malaysia</span>
         <h1 class="text-4xl md:text-5xl font-serif font-medium mt-2 mb-3">Gelamé Scented Candle</h1>
         
         <div class="flex items-baseline gap-3 mb-6">
@@ -85,17 +89,17 @@
           <span class="text-sm text-stone-500 uppercase tracking-wider">/ 100ml Amber Jar</span>
         </div>
 
-        <div class="mb-6 rounded-xl bg-[#8B5A3C] text-white p-4 text-sm">
-          <span class="block text-xs uppercase tracking-[0.25em] font-semibold mb-1">✨ Brand Launch Sale</span>
+        <div class="mb-6 rounded-2xl bg-[#2e1b0f] text-[#f7f1e3] p-4 text-sm">
+          <span class="block text-xs uppercase tracking-[0.25em] font-semibold mb-1 text-[#bcd160]">✨ Brand Launch Sale</span>
           Buy any <strong>3 candles</strong> and enjoy <strong>FREE shipping</strong> nationwide. Otherwise flat rate RM8 (Peninsular) / RM15 (East Malaysia).
         </div>
 
-        <div class="mb-6 rounded-xl bg-[#F3EEE7] border border-[#E6E0D6] p-5">
+        <div class="mb-6 rounded-xl bg-[#fbf7ec] border border-[#e3d8bf] p-5">
           <h2 class="text-2xl font-serif font-semibold mb-2">Gelamé Candle 🕯️</h2>
           <p class="text-stone-700 text-sm leading-relaxed mb-3">
             Bring warmth, comfort, and relaxation into your everyday life with Gelamé Candle. Enjoy a soothing ambiance that supports relaxation, self-care, and overall well-being. Perfect for unwinding after a long day or creating a peaceful atmosphere at home.
           </p>
-          <p class="font-serif italic text-lg text-[#8B5A3C]">Light Up Your Space, Elevate Your Mood. ✨</p>
+          <p class="font-serif italic text-lg text-[#4f6417]">Light Up Your Space, Elevate Your Mood. ✨</p>
         </div>
 
         <p class="text-stone-600 text-sm leading-relaxed mb-6">
@@ -105,7 +109,7 @@
         <!-- Scent -->
         <div class="mb-6">
           <span class="block text-xs uppercase tracking-wider font-semibold text-stone-700 mb-2">Scent:</span>
-          <div class="border-2 border-[#2C2724] bg-stone-100 p-3 rounded-lg text-sm font-medium">
+          <div class="border-2 border-[#2e1b0f] bg-stone-100 p-3 rounded-lg text-sm font-medium">
             Gelam
             <span class="block text-[11px] text-stone-500 font-normal">Our signature scent</span>
           </div>
@@ -119,12 +123,12 @@
         </div>
 
         <!-- Add to Cart CTA -->
-        <button onclick="addToBag()" class="w-full bg-[#2C2724] text-white py-4 rounded-xl text-sm font-medium tracking-wider uppercase hover:bg-[#8B5A3C] transition shadow-lg flex items-center justify-center gap-2">
+        <button onclick="addToBag()" class="w-full bg-[#bcd160] text-[#2e1b0f] py-4 rounded-full text-sm font-semibold tracking-wider uppercase hover:bg-[#2e1b0f] hover:text-[#f7f1e3] transition flex items-center justify-center gap-2">
           <span>Add to Bag • RM 19.90</span>
         </button>
 
         <!-- Order via WhatsApp -->
-        <a href="https://wa.me/60196403860?text=Hi%20Gel%C3%A9me%2C%20I%27d%20like%20to%20order%20a%20candle" target="_blank" rel="noopener" class="mt-3 w-full border border-[#25D366] text-[#128C7E] py-3 rounded-xl text-sm font-medium tracking-wider hover:bg-[#25D366] hover:text-white transition flex items-center justify-center gap-2">
+        <a href="https://wa.me/60196403860?text=Hi%20Gel%C3%A9me%2C%20I%27d%20like%20to%20order%20a%20candle" target="_blank" rel="noopener" class="mt-3 w-full border border-[#25D366] text-[#128C7E] py-3 rounded-full text-sm font-medium tracking-wider hover:bg-[#25D366] hover:text-white transition flex items-center justify-center gap-2">
           <span>Want to order? WhatsApp us: 019-6403860</span>
         </a>
 
@@ -139,8 +143,17 @@
     </div>
   </main>
 
+  <!-- Footer -->
+  <footer class="px-6 py-9 border-t border-[#e3d8bf] flex flex-wrap gap-3 justify-between text-sm">
+    <span>© 2026 Gelamé Candle. Nature’s calm in every glow.</span>
+    <span class="flex gap-5">
+      <a href="https://www.instagram.com/gelamecandle" target="_blank" rel="noopener" class="hover:underline">Instagram</a>
+      <a href="https://www.facebook.com/profile.php?id=61595188798941" target="_blank" rel="noopener" class="hover:underline">Facebook</a>
+    </span>
+  </footer>
+
   <!-- Slide-Out Shopping Bag Drawer -->
-  <div id="drawer" class="fixed inset-y-0 right-0 max-w-md w-full bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+  <div id="drawer" class="fixed inset-y-0 right-0 max-w-md w-full bg-[#f7f1e3] shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
     <div class="p-5 border-b flex items-center justify-between">
       <h3 class="text-xl font-serif font-semibold">Your Bag</h3>
       <button onclick="toggleDrawer(false)" class="text-2xl text-stone-400 hover:text-black">&times;</button>
@@ -229,7 +242,7 @@
     </div>
 
     <!-- Order Summary -->
-    <div class="p-5 border-t bg-stone-50 space-y-3">
+    <div class="p-5 border-t border-[#e3d8bf] bg-[#f1e9d2] space-y-3">
       <div class="flex justify-between text-sm text-stone-600">
         <span>Subtotal</span>
         <span id="subtotal-val">RM 0.00</span>
@@ -282,7 +295,7 @@
       document.querySelectorAll('.gallery-thumb').forEach(t => {
         const active = t === thumb;
         t.classList.toggle('border-2', active);
-        t.classList.toggle('border-[#8B5A3C]', active);
+        t.classList.toggle('border-[#4f6417]', active);
         t.classList.toggle('border', !active);
         t.classList.toggle('border-stone-200', !active);
         t.classList.toggle('hover:opacity-80', !active);
