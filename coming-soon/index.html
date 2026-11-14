@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Something new | Gelamé Candle</title>
+<meta name="description" content="A new Gelamé scent is on its way. We are not saying what it is.">
+<meta property="og:image" content="/images/teaser.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--night:#0d0907;--moss:#bcd160;--cream:#f2eadb;--blush:#f1d3e2;
+--serif:"Cormorant Garamond",Georgia,serif;--sans:"Jost",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--night);color:var(--cream);font:17px/1.65 var(--sans);min-height:100vh}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--moss);outline-offset:3px}
+nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 5vw}
+nav .brand{font:600 24px var(--serif);text-decoration:none}
+nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0}
+nav ul a{text-decoration:none;opacity:.8;padding:6px 0;border-bottom:2px solid transparent}
+nav ul a:hover,nav ul a[aria-current]{opacity:1;border-color:var(--moss)}
+main{display:grid;grid-template-columns:1fr 1fr;gap:5vw;align-items:center;padding:6vh 5vw 10vh;max-width:1200px;margin:auto}
+.glow{position:relative;aspect-ratio:1;border-radius:50%;overflow:hidden}
+.glow img{width:100%;height:100%;object-fit:cover;display:block;animation:breathe 7s ease-in-out infinite}
+.glow::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 90px 40px var(--night)}
+@keyframes breathe{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.04)}}
+h1{font:600 clamp(2.8rem,7vw,5.2rem)/1.02 var(--serif);margin:0 0 .35em}
+.lede{font:italic 500 1.5rem/1.4 var(--serif);max-width:28ch;color:var(--blush)}
+.clues{list-style:none;margin:28px 0;padding:0;display:grid;gap:12px;max-width:340px}
+.clues li{display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid #3b302a;padding-bottom:10px}
+.clues span.bar{display:block;height:14px;background:#2b211b;border-radius:3px}
+.btn{display:inline-block;background:var(--moss);color:#1b1c0a;padding:14px 28px;border-radius:999px;font-weight:500;text-decoration:none;margin:6px 10px 6px 0}
+.btn.alt{background:transparent;color:var(--cream);border:2px solid var(--moss)}
+footer{padding:28px 5vw;text-align:center;opacity:.6;font-size:15px}
+@media(max-width:760px){main{grid-template-columns:1fr}.glow{max-width:380px;margin:auto}}
+@media(prefers-reduced-motion:reduce){.glow img{animation:none;opacity:.85}}
+</style>
+</head>
+<body>
+<nav aria-label="Main">
+  <a class="brand" href="/">Gelamé</a>
+  <ul>
+    <li><a href="/">Shop</a></li>
+    <li><a href="/our-story/">Our story</a></li>
+    <li><a href="/coming-soon/" aria-current="page">Coming soon</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="glow"><img src="/images/teaser.jpg" alt="A candle jar in near darkness, its label out of focus"></div>
+  <div>
+    <h1>Something new is being poured.</h1>
+    <p class="lede">A second Gelamé scent is on its way. We are keeping it to ourselves for now.</p>
+    <ul class="clues" aria-label="Details we are not sharing yet">
+      <li>Scent <span class="bar" style="width:150px" aria-hidden="true"></span></li>
+      <li>Top note <span class="bar" style="width:105px" aria-hidden="true"></span></li>
+      <li>Arrives <span class="bar" style="width:70px" aria-hidden="true"></span></li>
+    </ul>
+    <p>Think you know what it is? Tell us your guess, and we will let you know first when it is ready.</p>
+    <a class="btn" href="https://wa.me/60196403860?text=Hi%20Gel%C3%A9me%2C%20my%20guess%20for%20the%20new%20scent%20is%3A%20">Send your guess</a>
+    <a class="btn alt" href="https://www.instagram.com/gelamecandle">Follow for clues</a>
+  </div>
+</main>
+
+<footer>© 2026 Gelamé Candle. Nature’s calm in every glow.</footer>
+</body>
+</html>
