@@ -166,7 +166,7 @@
       </div>
 
       <!-- Customer & Delivery Details -->
-      <form id="checkout-form" class="px-5 pb-5 space-y-3" onsubmit="event.preventDefault(); checkoutWhatsApp();" novalidate>
+      <form id="checkout-form" class="px-5 pb-5 space-y-3" onsubmit="event.preventDefault(); PAYMENT_API ? checkoutOnline() : checkoutWhatsApp();" novalidate>
         <h4 class="text-xs font-semibold uppercase tracking-wider text-stone-600 border-t border-stone-100 pt-4">Delivery Details</h4>
         <div>
           <label for="cust-name" class="block text-xs text-stone-600 mb-1">Full Name *</label>
@@ -178,7 +178,7 @@
             <input id="cust-phone" name="phone" type="tel" autocomplete="tel" placeholder="012-3456789" required class="w-full border border-stone-300 text-sm rounded-lg p-2.5 bg-white">
           </div>
           <div>
-            <label for="cust-email" class="block text-xs text-stone-600 mb-1">Email (optional)</label>
+            <label for="cust-email" id="email-label" class="block text-xs text-stone-600 mb-1">Email (optional)</label>
             <input id="cust-email" name="email" type="email" autocomplete="email" class="w-full border border-stone-300 text-sm rounded-lg p-2.5 bg-white">
           </div>
         </div>
@@ -222,7 +222,7 @@
             </optgroup>
           </select>
         </div>
-        <div>
+        <div id="manual-payment">
           <span class="block text-xs text-stone-600 mb-1">Payment Method *</span>
           <div class="grid grid-cols-2 gap-3 text-sm">
             <label class="flex items-center gap-2 border border-stone-300 rounded-lg p-2.5 bg-white cursor-pointer">
@@ -233,6 +233,7 @@
             </label>
           </div>
         </div>
+        <p id="online-note" class="hidden text-xs text-stone-600 bg-[#fbf7ec] border border-[#e3d8bf] rounded-lg p-3">You'll choose <strong>FPX online banking</strong> or <strong>DuitNow QR</strong> on the next secure Bayarcash page.</p>
         <div>
           <label for="cust-notes" class="block text-xs text-stone-600 mb-1">Order Notes (optional)</label>
           <textarea id="cust-notes" name="notes" rows="2" placeholder="Gift message, delivery instructions, etc." class="w-full border border-stone-300 text-sm rounded-lg p-2.5 bg-white"></textarea>
@@ -257,10 +258,11 @@
       </div>
 
       <!-- Checkout via WhatsApp -->
-      <button type="submit" form="checkout-form" class="w-full bg-[#25D366] text-white py-3.5 rounded-lg text-sm font-semibold tracking-wider uppercase hover:opacity-90 transition flex items-center justify-center gap-2 shadow-md">
+      <button id="pay-btn" type="submit" form="checkout-form" class="hidden w-full bg-[#bcd160] text-[#2e1b0f] py-3.5 rounded-full text-sm font-semibold tracking-wider uppercase hover:opacity-90 transition shadow-md">Pay securely (FPX / DuitNow QR)</button>
+      <button id="wa-btn" type="button" onclick="checkoutWhatsApp()" class="w-full bg-[#25D366] text-white py-3.5 rounded-full text-sm font-semibold tracking-wider uppercase hover:opacity-90 transition flex items-center justify-center gap-2 shadow-md">
         <span>Checkout via WhatsApp</span>
       </button>
-      <p class="text-[11px] text-stone-400 text-center">We'll confirm your order and send payment details on WhatsApp.</p>
+      <p id="checkout-hint" class="text-[11px] text-stone-400 text-center">We'll confirm your order and send payment details on WhatsApp.</p>
     </div>
   </div>
 
@@ -277,6 +279,8 @@
   <script>
     // WhatsApp number for orders (019-6403860, with country code 60 for Malaysia)
     const WHATSAPP_PHONE = "60196403860";
+    // Paste your Cloudflare Worker address here (no trailing slash) to turn on online payment, e.g. "https://gelame-pay.yourname.workers.dev"
+    const PAYMENT_API = "";
 
     const SCENT = "Gelam";
     const EAST_MALAYSIA = ["Sabah", "Sarawak", "W.P. Labuan"];
@@ -385,16 +389,9 @@
       if (field) field.focus();
     }
 
-    function checkoutWhatsApp() {
-      const errorEl = document.getElementById('form-error');
-      errorEl.classList.add('hidden');
-
-      if (bag.length === 0) {
-        showFormError('Your bag is empty. Please add a candle first.');
-        return;
-      }
-
-      const form = document.getElementById('checkout-form');
+    function validateForm(requireEmail) {
+      document.getElementById('form-error').classList.add('hidden');
+      if (bag.length === 0) { showFormError('Your bag is empty. Please add a candle first.'); return false; }
       const val = id => document.getElementById(id).value.trim();
       const required = [
         ['cust-name', 'Please enter your full name.'],
@@ -404,21 +401,51 @@
         ['cust-city', 'Please enter your city.'],
         ['cust-state', 'Please select your state.']
       ];
+      if (requireEmail) required.splice(2, 0, ['cust-email', 'Please enter your email address.']);
       for (const [id, message] of required) {
-        if (!val(id)) return showFormError(message, document.getElementById(id));
+        if (!val(id)) { showFormError(message, document.getElementById(id)); return false; }
       }
-      if (!/^[0-9+\-\s]{9,15}$/.test(val('cust-phone'))) {
-        return showFormError('Please enter a valid phone number.', document.getElementById('cust-phone'));
-      }
-      if (!/^[0-9]{5}$/.test(val('cust-postcode'))) {
-        return showFormError('Postcode must be 5 digits.', document.getElementById('cust-postcode'));
-      }
+      if (!/^[0-9+\-\s]{9,15}$/.test(val('cust-phone'))) { showFormError('Please enter a valid phone number.', document.getElementById('cust-phone')); return false; }
+      if (!/^[0-9]{5}$/.test(val('cust-postcode'))) { showFormError('Postcode must be 5 digits.', document.getElementById('cust-postcode')); return false; }
       const emailEl = document.getElementById('cust-email');
-      if (val('cust-email') && !emailEl.checkValidity()) {
-        return showFormError('Please enter a valid email address.', emailEl);
-      }
+      if (val('cust-email') && !emailEl.checkValidity()) { showFormError('Please enter a valid email address.', emailEl); return false; }
+      return true;
+    }
 
-      const payment = form.querySelector('input[name="payment"]:checked').value;
+    async function checkoutOnline() {
+      if (!validateForm(true)) return;
+      const val = id => document.getElementById(id).value.trim();
+      const btn = document.getElementById('pay-btn');
+      btn.disabled = true; btn.textContent = 'Starting secure payment…';
+      const qty = bag.reduce((sum, item) => sum + item.qty, 0);
+      try {
+        const res = await fetch(PAYMENT_API + '/create-payment', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ qty, name: val('cust-name'), email: val('cust-email'), phone: val('cust-phone'), state: val('cust-state') })
+        });
+        const out = await res.json();
+        if (!res.ok || !out.url) throw new Error(out.error || 'Payment could not be started.');
+        const subtotal = bag.reduce((sum, item) => sum + item.price * item.qty, 0);
+        try {
+          localStorage.setItem('gelame_order', JSON.stringify({
+            api: PAYMENT_API, order: out.order_number, qty, total: (subtotal + getShippingCost()).toFixed(2),
+            name: val('cust-name'), phone: val('cust-phone'), address: val('cust-address'),
+            postcode: val('cust-postcode'), city: val('cust-city'), state: val('cust-state'), notes: val('cust-notes')
+          }));
+        } catch (e) {}
+        window.location.href = out.url;
+      } catch (err) {
+        showFormError(err.message + ' You can also order via WhatsApp.');
+        btn.disabled = false; btn.textContent = 'Pay securely (FPX / DuitNow QR)';
+      }
+    }
+
+    function checkoutWhatsApp() {
+      if (!validateForm(false)) return;
+      const form = document.getElementById('checkout-form');
+      const val = id => document.getElementById(id).value.trim();
+
+      const payment = PAYMENT_API ? 'To be arranged on WhatsApp' : form.querySelector('input[name="payment"]:checked').value;
       const shippingCost = getShippingCost();
       const subtotal = bag.reduce((sum, item) => sum + item.price * item.qty, 0);
       const region = EAST_MALAYSIA.includes(val('cust-state')) ? 'East Malaysia' : 'Peninsular Malaysia';
@@ -447,6 +474,17 @@
       ];
 
       window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(lines.join('\n'))}`, '_blank');
+    }
+
+    if (PAYMENT_API) {
+      document.getElementById('pay-btn').classList.remove('hidden');
+      document.getElementById('manual-payment').classList.add('hidden');
+      document.getElementById('online-note').classList.remove('hidden');
+      document.getElementById('email-label').textContent = 'Email *';
+      document.getElementById('checkout-hint').textContent = 'Pay now with FPX or DuitNow QR, or order via WhatsApp instead.';
+      const wa = document.getElementById('wa-btn');
+      wa.className = 'w-full border border-[#25D366] text-[#128C7E] py-3 rounded-full text-sm font-semibold tracking-wider uppercase hover:bg-[#25D366] hover:text-white transition';
+      wa.innerHTML = '<span>Order via WhatsApp instead</span>';
     }
 
     renderBag();
