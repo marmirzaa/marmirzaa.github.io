@@ -22,8 +22,8 @@
 <body class="bg-[#f7f1e3] text-[#2e1b0f] antialiased">
 
   <!-- Top Announcement Bar -->
-  <div class="bg-[#2e1b0f] text-[#f7f1e3] text-xs py-2 px-4 text-center tracking-wider">
-    🎉 <strong>Brand Launch Sale</strong> • Buy a bundle of 3 candles &amp; get <strong>FREE shipping</strong> anywhere in Malaysia 🇲🇾
+  <div data-promo class="bg-[#2e1b0f] text-[#f7f1e3] text-xs py-2 px-4 text-center tracking-wider">
+    🛍️ <strong>Payday Sale</strong> • <strong>RM19.90 only</strong> • 25–28 November 2026
   </div>
 
   <!-- Navigation -->
@@ -55,8 +55,13 @@
     </nav>
   </header>
 
+  <!-- Payday Sale banner (hides itself after the sale ends) -->
+  <section data-promo class="max-w-6xl mx-auto px-6 pt-8">
+    <img src="/images/payday-sale.jpg" width="1000" height="838" alt="Payday Sale: Gelamé candles RM19.90 only, from 25 to 28 November 2026. Order by WhatsApp or on this website." class="w-full h-auto rounded-3xl border-4 border-[#f1d3e2]">
+  </section>
+
   <!-- Hero & Featured Product -->
-  <main class="max-w-6xl mx-auto px-6 py-12 md:py-20">
+  <main class="max-w-6xl mx-auto px-6 py-10 md:py-16">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
       
       <!-- Product Gallery -->
@@ -89,10 +94,12 @@
           <span class="text-sm text-stone-500 uppercase tracking-wider">/ 100ml Amber Jar</span>
         </div>
 
-        <div class="mb-6 rounded-2xl bg-[#2e1b0f] text-[#f7f1e3] p-4 text-sm">
-          <span class="block text-xs uppercase tracking-[0.25em] font-semibold mb-1 text-[#bcd160]">✨ Brand Launch Sale</span>
-          Buy any <strong>3 candles</strong> and enjoy <strong>FREE shipping</strong> nationwide. Otherwise flat rate RM8 (Peninsular) / RM15 (East Malaysia).
+        <div data-promo class="mb-6 rounded-2xl bg-[#2e1b0f] text-[#f7f1e3] p-4 text-sm">
+          <span class="block text-xs uppercase tracking-[0.25em] font-semibold mb-1 text-[#bcd160]">🛍️ Payday Sale</span>
+          <strong>RM19.90 only</strong>, from 25th to 28th November 2026. Don't miss out on our special payday sale!
         </div>
+
+        <p class="mb-6 text-sm text-stone-600">Shipping: flat rate RM8 (Peninsular) / RM15 (East Malaysia). <strong>Free shipping when you buy 3 or more candles.</strong></p>
 
         <div class="mb-6 rounded-xl bg-[#fbf7ec] border border-[#e3d8bf] p-5">
           <h2 class="text-2xl font-serif font-semibold mb-2">Gelamé Candle 🕯️</h2>
@@ -280,11 +287,11 @@
     // WhatsApp number for orders (019-6403860, with country code 60 for Malaysia)
     const WHATSAPP_PHONE = "60196403860";
     // Paste your Cloudflare Worker address here (no trailing slash) to turn on online payment, e.g. "https://gelame-pay.yourname.workers.dev"
-    const PAYMENT_API = "https://gelame-pay.marmirzaa.workers.dev";
+    const PAYMENT_API = "";
 
     const SCENT = "Gelam";
     const EAST_MALAYSIA = ["Sabah", "Sarawak", "W.P. Labuan"];
-    const FREE_SHIPPING_QTY = 3; // Brand launch sale: free shipping on bundles of 3+
+    const FREE_SHIPPING_QTY = 3; // Free shipping on bundles of 3+
     let bag = [];
 
     function getShippingCost() {
@@ -375,7 +382,7 @@
 
       subtotalEl.textContent = `RM ${subtotal.toFixed(2)}`;
       shippingEl.textContent = totalQty >= FREE_SHIPPING_QTY
-        ? 'FREE (Launch Sale)'
+        ? 'FREE (3+ candles)'
         : document.getElementById('cust-state').value || bag.length === 0
         ? `RM ${shippingCost.toFixed(2)}`
         : 'Select state';
@@ -456,7 +463,7 @@
         '*Order*',
         ...bag.map(item => `• ${item.qty} x ${item.name} - ${item.scent} (RM ${(item.price * item.qty).toFixed(2)})`),
         `Subtotal: RM ${subtotal.toFixed(2)}`,
-        `Shipping (${region}): ${shippingCost === 0 ? 'FREE - Launch Sale bundle of 3' : 'RM ' + shippingCost.toFixed(2)}`,
+        `Shipping (${region}): ${shippingCost === 0 ? 'FREE - bundle of 3' : 'RM ' + shippingCost.toFixed(2)}`,
         `*Total: RM ${(subtotal + shippingCost).toFixed(2)}*`,
         '',
         '*Customer Details*',
@@ -485,6 +492,11 @@
       const wa = document.getElementById('wa-btn');
       wa.className = 'w-full border border-[#25D366] text-[#128C7E] py-3 rounded-full text-sm font-semibold tracking-wider uppercase hover:bg-[#25D366] hover:text-white transition';
       wa.innerHTML = '<span>Order via WhatsApp instead</span>';
+    }
+
+    // Payday Sale ends 28 Nov 2026, 11:59pm Malaysia time: remove the sale banners automatically
+    if (Date.now() > Date.parse('2026-11-28T23:59:59+08:00')) {
+      document.querySelectorAll('[data-promo]').forEach(el => el.remove());
     }
 
     renderBag();
